@@ -24,5 +24,61 @@ class Login(Resource):
                 return make_response(user.to_dict(), 200)
         return make_response({"error": "401 Unauthorized"}, 401)
 api.add_resource(Login, '/login')
+
+class Stocks(Resource):
+    def get(self):
+        stocks = [stock.to_dict() for stock in Stock.query.all()]
+        return make_response(stocks, 200)
+    
+    def post(self):
+        request_json = request.get_json()
+        if not request_json:
+            return make_response({"Error":"invalid stock"}, 404)
+        # check if stock already exist in Stock table
+        elif request_json['ticker'] in [stock.ticker for stock in Stock.query.all()]:
+            return make_response({"Error":"Stock already exist"},400)
+        else:
+            stock = Stock(
+                ticker = request_json['ticker'],
+                company_name = request_json['company_name'],
+                price = request_json['price']
+            )
+            db.session.add(stock)
+            db.session.commit()
+            
+            return make_response(stock.to_dict(), 201)
+api.add_resource(Stocks, '/stocks')
+
+class OwnedStocks(Resource):
+    def get(self):
+        owned_stocks = [stock.to_dict() for stock in OwnedStock.query.all()]
+        return make_response(owned_stocks, 200)
+    
+    def post(self):
+        request_json = request.get_json()
+        if not request_json:
+            return make_response({"Error": "invalid request"},404)
+        else:
+            new_owned_stock = OwnedStock(
+                user_id = request_json['user_id'],
+                stock_id = request_json['stock_id'],
+                quantity = request_json['quantity'],
+                purchase_price = request_json['purchase_price']
+            )
+            db.session.add(new_owned_stock)
+            db.session.commit()
+
+            return make_response(new_owned_stock.to_dict(), 201)
+api.add_resource(OwnedStocks, '/owned_stocks')
+
+
+
+class StocksByUserId(Resource):
+    def get(self):
+        stocks = [stock.to_dict() for stock in OwnedStock.query.filter_by(user_id=session['user_id'])]
+        return make_response(stocks, 200)
+api.add_resource(StocksByUserId, '/stocks_by_user_id')
+
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
