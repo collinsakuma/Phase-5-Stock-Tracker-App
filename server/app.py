@@ -12,6 +12,40 @@ from config import *
 from models import User, Stock, WatchedStock, OwnedStock
 
 # Views go here!
+class Signup(Resource):
+
+    def post(self):
+        request_json = request.get_json()
+        username = request_json.get('username')
+        password = request_json.get('password')
+
+        user = User(
+            username=username
+        )
+
+        user.password_hash = password
+
+        try:
+            db.session.add(user)
+            db.session.commit()
+            session['user_id'] = user.id
+            return make_response(user.to_dict(), 201)
+        except IntegrityError:
+            return make_response({"error":"422 Unprocessable Entity"}, 422)
+        
+api.add_resource(Signup, '/signup')
+
+class CheckSession(Resource):
+    def get(self):
+        try:
+            user = User.query.filter_by(id=session['user_id']).first()
+            return make_response(user.to_dict(), 200)
+        except:
+            return make_response({"error": "Unauthorized"}, 401)
+        
+api.add_resource(CheckSession, '/check_session')
+
+
 class Login(Resource):
     def post(self):
         request_json = request.get_json()
@@ -24,6 +58,15 @@ class Login(Resource):
                 return make_response(user.to_dict(), 200)
         return make_response({"error": "401 Unauthorized"}, 401)
 api.add_resource(Login, '/login')
+
+class Logout(Resource):
+    def delete(self):
+        if session.get('user_id'):
+            session['user_id'] = None
+            return make_response({"message": "Logout Sucessful"}, 204)
+        return make_response({"error": "401 Unauthorized"}, 401)
+
+api.add_resource(Logout, '/logout')
 
 class Stocks(Resource):
     def get(self):
@@ -75,7 +118,7 @@ api.add_resource(OwnedStocks, '/owned_stocks')
 
 class StocksByUserId(Resource):
     def get(self):
-        stocks = [stock.to_dict() for stock in OwnedStock.query.filter_by(user_id=session['user_id'])]
+        stocks = [stock.to_dict(rules=('stock',)) for stock in OwnedStock.query.filter_by(user_id=session['user_id'])]
         return make_response(stocks, 200)
 api.add_resource(StocksByUserId, '/stocks_by_user_id')
 
