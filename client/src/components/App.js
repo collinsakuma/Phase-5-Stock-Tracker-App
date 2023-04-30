@@ -9,8 +9,6 @@ import Holdings from "./Holdings";
 import UpdatePortfolio from "./UpdatePortfolio";
 import Transactions from "./Transactions";
 
-console.log(process.env.REACT_APP_API_KEY)
-
 function App() {
   const [user, setUser] = useState(null);
   useEffect(() => {
@@ -51,7 +49,7 @@ function App() {
             <Holdings />
           </Route>
           <Route exact path="/update_portfolio">
-            <UpdatePortfolio />
+            <UpdatePortfolio user={user}/>
           </Route>
           <Route exact path="/transactions">
             <Transactions />
