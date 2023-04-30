@@ -40,7 +40,7 @@ class User(db.Model, SerializerMixin):
 class Stock(db.Model, SerializerMixin):
     __tablename__ = 'stocks'
 
-    serialize_rules = ('-watched_stocks', '-owned_stocks','-created_at', '-updated_at')
+    serialize_rules = ('-watched_stocks', '-owned_stocks', '-transactions', '-created_at', '-updated_at')
 
     id = db.Column(db.Integer, primary_key=True)
     ticker = db.Column(db.String)
@@ -50,6 +50,7 @@ class Stock(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     watched_stocks = db.relationship('WatchedStock', backref='stock')
+    transactions = db.relationship('Transaction', backref='stock')
     owned_stocks = db.relationship('OwnedStock', backref='stock')
 
     def __repr__(self):
@@ -78,9 +79,26 @@ class OwnedStock(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'))
     quantity = db.Column(db.Float)
-    purchase_price = db.Column(db.Integer)
+    total_cost = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     def __repr__(self):
         return f'<{self.user.name} owns shares of {self.stock.company_name}>'
+    
+class Transaction(db.Model, SerializerMixin):
+    __tablename__ = "transactions"
+
+    serialize_rules = ('-created_at', '-updated_at', '-stocks')
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'))
+    quantity = db.Column(db.Float)
+    bought_total = db.Column(db.Integer)
+    sold_total = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    def __repr__(self):
+        return f'<purchased {self.qantity} share of {self.stock.name}>'
