@@ -1,7 +1,8 @@
 
 function Transactions() {
+
     return (
-        <p>Transactions</p>
+        <p>transactions</p>
     )
 }
 export default Transactions;
