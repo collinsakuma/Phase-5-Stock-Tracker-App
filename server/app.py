@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 # Local imports
 from config import *
-from models import User, Stock, WatchedStock, OwnedStock
+from models import User, Stock, WatchedStock, OwnedStock, Transaction
 
 # Views go here!
 class Signup(Resource):
@@ -106,7 +106,7 @@ class OwnedStocks(Resource):
                 user_id = request_json['user_id'],
                 stock_id = request_json['stock_id'],
                 quantity = request_json['quantity'],
-                purchase_price = request_json['purchase_price']
+                total_cost = request_json['total_cost']
             )
             db.session.add(new_owned_stock)
             db.session.commit()
@@ -114,13 +114,49 @@ class OwnedStocks(Resource):
             return make_response(new_owned_stock.to_dict(), 201)
 api.add_resource(OwnedStocks, '/owned_stocks')
 
+# OwnedStockById returns a stock by its id and checks if the current user already has this stock in OwnedStocks
+class OwnedStocksById(Resource):
+    def patch(self,id):
+        stock = OwnedStock.query.filter_by(id=id).filter_by(user_id=session['user_id']).first()
+        if not stock:
+            return make_response({"error": "user not found"}, 404)
+        request_json = request.get_json()
+        for attr in request_json:
+            setattr(stock, attr, request_json[attr])
+        db.session.add(stock)
+        db.session.commit()
 
+        return make_response(stock.to_dict(), 202)
+api.add_resource(OwnedStocksById, '/owned_stocks/<int:id>')
 
 class StocksByUserId(Resource):
     def get(self):
         stocks = [stock.to_dict(rules=('stock',)) for stock in OwnedStock.query.filter_by(user_id=session['user_id'])]
         return make_response(stocks, 200)
 api.add_resource(StocksByUserId, '/stocks_by_user_id')
+
+class Transactions(Resource):
+    def get(self):
+        transactions = [transaction.to_dict() for transaction in Transaction.query.all()]
+        return make_response(transactions, 200)
+    
+    def post(self):
+        request_json = request.get_json()
+        if not request_json:
+            return make_response({"Error": "invalid request"},404)
+        else:
+            new_transaction = Transaction(
+                user_id = request_json['user_id'],
+                stock_id = request_json['stock_id'],
+                quantity = request_json['quantity'],
+                bought_total = request_json['bought_total'],
+                sold_total = request_json['sold_total']
+            )
+            db.session.add(new_transaction)
+            db.session.commit()
+            return make_response(new_transaction.to_dict(), 201)
+
+api.add_resource(Transactions, '/transactions')
 
 
 if __name__ == '__main__':
