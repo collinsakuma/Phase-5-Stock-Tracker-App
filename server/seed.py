@@ -8,7 +8,7 @@ from random import randint, choice as rc
 
 # Local imports
 from app import app
-from models import db, User, Stock, WatchedStock, OwnedStock
+from models import db, User, Stock, WatchedStock, OwnedStock, Transaction
 
 if __name__ == '__main__':
     # fake = Faker()
@@ -19,6 +19,7 @@ if __name__ == '__main__':
         Stock.query.delete()
         WatchedStock.query.delete()
         OwnedStock.query.delete()
+        Transaction.query.delete()
 
         user_1 = User(
         username="Collin",
@@ -28,7 +29,7 @@ if __name__ == '__main__':
         user_2 = User(
         username="user",
         )
-        user_1.password_hash = "password"
+        user_2.password_hash = "password"
 
         stock1 = Stock(
             ticker="aapl",
