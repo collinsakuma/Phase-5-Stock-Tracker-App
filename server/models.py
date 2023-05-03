@@ -95,6 +95,7 @@ class Transaction(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer)
     stock_id = db.Column(db.Integer, db.ForeignKey('stocks.id'))
     quantity = db.Column(db.Float)
+    share_price = db.Column(db.Float)
     bought_total = db.Column(db.Integer)
     sold_total = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
