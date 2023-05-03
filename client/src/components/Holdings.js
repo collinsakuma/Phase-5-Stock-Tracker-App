@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import HoldingCard from "./HoldingCard";
 
 function Holdings() {
-    const [userStocks, setUserStocks] = useState([])
+    const [userStocks, setUserStocks] = useState([]);
 
     useEffect(() => {
         fetch(`/stocks_by_user_id`)
