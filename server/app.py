@@ -92,6 +92,49 @@ class Stocks(Resource):
             return make_response(stock.to_dict(), 201)
 api.add_resource(Stocks, '/stocks')
 
+class StocksById(Resource):
+    def get(self, id):
+        stock = Stock.query.filter_by(id=id).first()
+        if not stock:
+            return make_response({"error": "stock no found"},404)
+        else: 
+            return make_response(stock.to_dict(), 200)
+api.add_resource(StocksById, '/stocks/<int:id>')
+
+class WatchedStocks(Resource):
+    
+    def post(self):
+        request_json = request.get_json()
+        if not request_json:
+            return make_response({"Error": "invalid request"}, 404)
+        # note add so a user cant add the same stock twice to their watchedStocks
+        else:
+            newWatchedStock = WatchedStock(
+                user_id = request_json['user_id'],
+                stock_id = request_json['stock_id'],
+            )
+            db.session.add(newWatchedStock)
+            db.session.commit()
+            return make_response(newWatchedStock.to_dict(),201)
+api.add_resource(WatchedStocks, '/watched_stocks')
+
+class WatchedStocksById(Resource):
+    def delete(self, id):
+        watchedStock = WatchedStock.query.filter_by(id=id).first()
+        if not watchedStock:
+            return make_response({"error": "stock not found"}, 404)
+        else:
+            db.session.delete(watchedStock)
+            db.session.commit()
+api.add_resource(WatchedStocksById, '/watched_stocks/<int:id>')
+
+
+class WatchedStocksByUser(Resource):
+    def get(self):
+        watchedStocks = [stock.to_dict(rules=('stock',)) for stock in WatchedStock.query.filter_by(user_id = session['user_id'])]
+        return make_response(watchedStocks, 200)
+api.add_resource(WatchedStocksByUser, '/watched_stocks_by_user')
+
 class OwnedStocks(Resource):
     def get(self):
         owned_stocks = [stock.to_dict() for stock in OwnedStock.query.all()]
@@ -116,7 +159,7 @@ api.add_resource(OwnedStocks, '/owned_stocks')
 
 # OwnedStockById returns a stock by its id and checks if the current user already has this stock in OwnedStocks
 class OwnedStocksById(Resource):
-    def patch(self,id):
+    def patch(self, id):
         stock = OwnedStock.query.filter_by(id=id).filter_by(user_id=session['user_id']).first()
         if not stock:
             return make_response({"error": "user not found"}, 404)
@@ -127,6 +170,14 @@ class OwnedStocksById(Resource):
         db.session.commit()
 
         return make_response(stock.to_dict(), 202)
+    
+    def delete(self, id):
+        stock = OwnedStock.query.filter_by(id=id).filter_by(user_id=session['user_id']).first()
+        if not stock:
+            return make_response({"Error": "Stock not found"}, 404)
+        db.session.delete(stock)
+        db.session.commit()
+
 api.add_resource(OwnedStocksById, '/owned_stocks/<int:id>')
 
 class StocksByUserId(Resource):
@@ -150,13 +201,20 @@ class Transactions(Resource):
                 stock_id = request_json['stock_id'],
                 quantity = request_json['quantity'],
                 bought_total = request_json['bought_total'],
-                sold_total = request_json['sold_total']
+                sold_total = request_json['sold_total'],
+                share_price = request_json['share_price']
             )
             db.session.add(new_transaction)
             db.session.commit()
             return make_response(new_transaction.to_dict(), 201)
 
 api.add_resource(Transactions, '/transactions')
+
+class TransactionsByUserId(Resource):
+    def get(self):
+        transactions = [transaction.to_dict(rules=('stock', 'created_at')) for transaction in Transaction.query.filter_by(user_id=session['user_id'])]
+        return make_response(transactions, 200)
+api.add_resource(TransactionsByUserId, '/transactions_by_user_id')
 
 
 if __name__ == '__main__':
