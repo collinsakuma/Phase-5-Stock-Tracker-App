@@ -1,10 +1,9 @@
-import NewsFeed from './NewsFeed';
-
+import NewsFeed from "./NewsFeed";
 
 function Homepage() {
     return (
         <div>
-            Homepage
+            Homepage here
             <NewsFeed/>
         </div>
     )

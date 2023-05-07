@@ -1,26 +1,50 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import NewsArticleCard from './NewsArticleCard';
+
+const API = "https://financialmodelingprep.com/api/v3/"
 
 function NewsFeed() {
-    const API = "https://financialmodelingprep.com/api/v3/"
+    const [newsArticles, setNewsArticles] = useState([]);
+    const [userStocks, setUserStocks] = useState("");
     
-    async function getStockNews() {
-        const response = await fetch(`${API}stock_news?apikey=${process.env.REACT_APP_API_KEY}`);
-        return response.json()
-    }
+    useEffect(() => {
+        fetch('/stocks_by_user_id')
+        .then((r) => r.json())
+        .then((r) => {
+            let array = [];
+            r.map((holding) => {
+                array.push(holding.stock.ticker.toUpperCase());
+            })
+            setUserStocks(array.toString());
+        })
+    },[])
 
     useEffect(() => {
-        async function fetchStockNews() {
-            try {
-                const stockNews = await getStockNews();
-                console.log(stockNews)
-            } catch(error) {
-                console.log(error);
-            }
-        }
-    })
-    
+        fetch(`${API}stock_news?tickers=${userStocks}&limit=10&apikey=${process.env.REACT_APP_API_KEY}`)
+          .then((r) => r.json())
+          .then((data) => {
+            const uniqueArticles = filterDuplicateArticles(data);
+            setNewsArticles(uniqueArticles);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      }, [userStocks]);
+      
+      function filterDuplicateArticles(articles) {
+        const uniqueTitles = new Set();
+        return articles.filter((article) => {
+          if (uniqueTitles.has(article.title)) {
+            return false;
+          }
+          uniqueTitles.add(article.title);
+          return true;
+        });
+      }
     return (
-        <div>news feed</div>
+        <div>
+            {newsArticles.map((article) => <NewsArticleCard key={article.publishedDate} article={article}/>)}
+        </div>
     )
 }
 export default NewsFeed;
