@@ -20,6 +20,9 @@ function Navbar({ handleLogout }) {
                 <NavLink exact to='/transactions'>Transactions</NavLink>
             </Menu.Item>
             <Menu.Item>
+                <NavLink exact to='/senate_trading'>Senate Trading</NavLink>
+            </Menu.Item>
+            <Menu.Item>
                 <Button onClick={handleLogout}>Logout</Button>
             </Menu.Item>
         </Menu>
