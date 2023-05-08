@@ -1,5 +1,5 @@
 import WatchListCardOpen from "./WatchListCardOpen";
-import { Button, Form, Label } from 'semantic-ui-react';
+import { Button, Form, Label, Card } from 'semantic-ui-react';
 import { useState, useEffect } from "react";
 import WatchListCardClosed from './WatchListCardClosed';
 
@@ -28,7 +28,6 @@ function Watchlist({ user, isMarketOpen }) {
                 })
                 .then((r) => {
                     // if the stock already exist in the db it will fetch the id of that stock using the ticker set in state
-                    if (!r.ok) {
                         fetch('/stocks')
                             .then((r) => r.json())
                             .then((r) => {
@@ -53,7 +52,7 @@ function Watchlist({ user, isMarketOpen }) {
                                         .then(setWatchedStocksArray)
                                 })
                             })
-                    }
+
                     return r.json();
                 })
             })
@@ -78,7 +77,6 @@ function Watchlist({ user, isMarketOpen }) {
     }
     return (
         <div>
-            marketClosed
             <Form onSubmit={handleAddStockToWatchList}>
                 <Form.Field>
                     <Label>Search By Ticker</Label>
@@ -91,7 +89,8 @@ function Watchlist({ user, isMarketOpen }) {
                 </Form.Field>
                 <Button>Add to WatchList</Button>
             </Form>
-            <div>
+            <br></br>
+            <Card.Group itemsPerRow={1} centered>
                 {isMarketOpen ? (
                     watchedStocksArray.map((watchedStock) => (
                         <WatchListCardOpen
@@ -109,7 +108,7 @@ function Watchlist({ user, isMarketOpen }) {
                         />
                     ))
                 )}
-            </div>
+            </Card.Group>
         </div>
     )
 }
