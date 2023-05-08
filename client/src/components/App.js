@@ -3,11 +3,13 @@ import { Switch, Route } from "react-router-dom";
 import Login from "./Login";
 import Header from "./Header";
 import Navbar from "./Navbar";
-import Homepage from "./Homepage";
+import Homepage from "./home/Homepage";
 import Watchlist from "./Watchlist";
 import Holdings from "./Holdings";
 import UpdatePortfolio from "./UpdatePortfolio";
 import Transactions from "./Transactions";
+import TickerHeader from "./TickerHeader";
+import SenateTrading from "./gov_trading/governemtTrading";
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
@@ -65,6 +67,7 @@ function App() {
     <div>
       <div>
         <Header />
+        <TickerHeader />
         <Navbar handleLogout={handleLogout}/> 
       </div>
       <div>
@@ -83,6 +86,9 @@ function App() {
           </Route>
           <Route exact path="/transactions">
             <Transactions />
+          </Route>
+          <Route>
+            <SenateTrading />
           </Route>
         </Switch>
       </div>
