@@ -74,6 +74,7 @@
     border-top: 1px solid lightgrey;
     border-bottom: 1px solid lightgray;
     padding: 8px;
+    margin-right: auto;
 }
 
 .table-elements-header {
@@ -96,4 +97,83 @@
     width: 25%;
     margin-bottom: 25px;
     font-weight: bold;
+}
+
+.gov-trading-link {
+    color: black;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.gov-trading-link:hover {
+    color: black;
+    font-weight: bolder;
+    text-decoration-line: underline;
+}
+
+.gov-trading-text {
+    margin-top: 10px;
+}
+
+.transaction-title {
+    font-size: 2em;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.add-stocks {
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.watchlist-title {
+    font-size: 2em;
+    font-weight: bold;
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.navbar.active {
+    font-weight: 650;
+}
+
+.navbar {
+    color: black;
+    font-size: 115%;
+    margin-right: 15px;
+}
+
+.navbar-nav .navbar:hover {
+    color: black;
+    font-size: 115%;
+    text-decoration: underline;
+    /* add any other styles you want to apply on hover */
+  }
+
+.holdings-title {
+    font-size: 2em;
+    font-weight: bold;
+    width: 60%;
+    margin: 0 auto;
+    text-align: left;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+  
+.transactions-title {
+    font-size: 2em;
+    font-weight: bold;
+    width: 75%;
+    margin: 0 auto;
+    text-align: left;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-decoration: underline;
 }
