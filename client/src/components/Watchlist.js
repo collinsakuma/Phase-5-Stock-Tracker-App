@@ -1,6 +1,7 @@
 import WatchListCardOpen from "./WatchListCardOpen";
 import { Button, Form, Label, Card } from 'semantic-ui-react';
 import { useState, useEffect } from "react";
+import Popup from "reactjs-popup"
 import WatchListCardClosed from './WatchListCardClosed';
 
 const API = "https://financialmodelingprep.com/api/v3/"
@@ -56,6 +57,7 @@ function Watchlist({ user, isMarketOpen }) {
                     return r.json();
                 })
             })
+            setTicker('');
     }
 
     useEffect(() => {
@@ -77,19 +79,32 @@ function Watchlist({ user, isMarketOpen }) {
     }
     return (
         <div>
-            <Form onSubmit={handleAddStockToWatchList}>
-                <Form.Field>
-                    <Label>Search By Ticker</Label>
-                    <Form.Input 
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop:"20px" }}>
+                <Form style={{ width: "30%", backgroundColor: "#f0f0f0", padding: "20px", borderRadius: "10px" }} onSubmit={handleAddStockToWatchList}>
+                    <p className="add-stocks">Add Stocks to Watchlist</p>
+                    <Form.Field style={{ alignItems: "center", marginBottom: "20px" }}>
+                    <label style={{ marginRight: "10px" }}>Search By Ticker</label>
+                    <Form.Input
                         name="searchTicker"
                         type="string"
+                        placeholder="company ticker"
                         value={ticker.toUpperCase()}
                         onChange={(e) => setTicker(e.target.value)}
                     />
-                </Form.Field>
-                <Button>Add to WatchList</Button>
-            </Form>
+                    </Form.Field>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Button type="submit">
+                        <Button.Content>
+                        Add to WatchList
+                        </Button.Content>
+                    </Button>
+                    </div>
+                </Form>
+            </div>
             <br></br>
+            <div className="watchlist-title">
+                Watchlist
+            </div>
             <Card.Group itemsPerRow={1} centered>
                 {isMarketOpen ? (
                     watchedStocksArray.map((watchedStock) => (
