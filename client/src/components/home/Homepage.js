@@ -1,10 +1,18 @@
-import NewsFeed from "./NewsFeed";
+import NewsArticles from "./NewsArticles";
+import TopGainers from "./TopGainers";
+import TopLosers from "./TopLosers";
 
 function Homepage() {
     return (
         <div>
-            Homepage here
-            <NewsFeed/>
+            <div className="top-tables">
+                <TopGainers />
+                <TopLosers />
+            </div>
+            <div className="news-header">
+                News Feed:
+            </div>
+            <NewsArticles/>
         </div>
     )
 }
