@@ -107,6 +107,8 @@ class WatchedStocks(Resource):
         request_json = request.get_json()
         if not request_json:
             return make_response({"Error": "invalid request"}, 404)
+        elif request_json['stock_id'] in [stock.stock_id for stock in WatchedStock.query.filter_by(user_id = session['user_id']).all()]:
+            return make_response({"Error":"Stock is already is users watchlist"},400)
         # note add so a user cant add the same stock twice to their watchedStocks
         else:
             newWatchedStock = WatchedStock(
