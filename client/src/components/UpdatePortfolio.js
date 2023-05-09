@@ -12,6 +12,7 @@ function UpdatePortfolio({ user }) {
     const [quantity, setQuantity] = useState(0);
     const [stockId, setStockId] = useState(0);
     const [canSubmit, setCanSubmit] = useState(true);
+    const [canSell, setCanSell] = useState(true);
     // state for update stock
     const [numSharesOwned, setNumSharesOwned] = useState(0);
     const [numSharesToSell, setNumSharesToSell] = useState(0);
@@ -23,6 +24,12 @@ function UpdatePortfolio({ user }) {
         }
     },[quote, quantity])
 
+    useEffect(() => {
+        if (quote > 0 && numSharesToSell > 0) {
+            setCanSell(false)
+        }
+    },[quote, numSharesToSell])
+
     //reset state on form selection (clear forms)
     const resetState = () => {
         setFoundStock([]);
@@ -32,6 +39,7 @@ function UpdatePortfolio({ user }) {
         setStockId(0);
         setQuantity(0);
         setCanSubmit(true);
+        setCanSell(true);
         setNumSharesOwned(0);
         setNumSharesToSell(0);
     }
@@ -216,149 +224,163 @@ function UpdatePortfolio({ user }) {
             }
         })
         .then(resetState());
-        // setFoundStock([]);
-        // setCompanyName("");
-        // setNumSharesOwned(0);
-        // setNumSharesToSell(0);
-        // setQuote([]);
-        // setStockId(0);
-        // setTicker("");
     }
 
     return (
         <div>
-            <Button onClick={() => {
-                setNewOrUpdate(true);
-                resetState();
-                }}>Buy</Button>
-            <Button onClick={() => {
-                setNewOrUpdate(false);
-                resetState();
-                }}>Sell</Button>
+            <div style={{display:"flex", margin:"20px", justifyContent:"center", marginTop:"40px"}}>
+                <Button onClick={() => {
+                    setNewOrUpdate(true);
+                    resetState();
+                    }}
+                    >Buy</Button>
+                <Button onClick={() => {
+                    setNewOrUpdate(false);
+                    resetState();
+                    }}>Sell</Button>
+            </div>
             <div>
                 {newOrUpdate ? (
-                    <>
-                        <Form onSubmit={handleTickerSearch}>
-                            <Form.Field>
-                                <Form.Input 
-                                    name="ticker"
-                                    type="text"
-                                    value={ticker.toUpperCase()}
-                                    onChange={(e) => setTicker(e.target.value)}
-                                    placeholder="ticker"
-                                />
-                            </Form.Field>
-                            <Button type="submit">Search</Button>
-                        </Form>
-                        <Form onSubmit={handleAddStock}>
-                            <Form.Field>
-                                <Form.Input 
-                                    name="company"
-                                    type="text"
-                                    value={companyName}
-                                    placeholder="Company Name"
-                                    readOnly
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Label>Share Price</Label>
-                                <Form.Input 
-                                    name="quote"
-                                    type="number"
-                                    value={quote}
-                                    onChange={(e) => setQuote(e.target.value)}
-                                    placeholder="Share Price"
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Form.Input
-                                    name="quantity"
-                                    type="number"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                    placeholder="Share Quantity"
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Label>Total Price</Label>
-                                <Form.Input 
-                                    name="totalCost"
-                                    type="string"
-                                    value={`$ ${(quantity * quote).toFixed(2)}`}
-                                    placeholder="Total Cost"
-                                    readOnly
-                                />
-                            </Form.Field>
-                            <Button type="submit" disabled={canSubmit}>
-                                Add Stock
-                            </Button>
-                        </Form>
-                    </>
+                    <div>
+                        <div className="watchlist-title" style={{textAlign:"center"}}>
+                            Add To Portfolio
+                        </div>
+                        <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                            <div  style={{ width: "30%", backgroundColor: "#f0f0f0", padding: "60px", borderRadius: "10px"}}> 
+                                <Form onSubmit={handleTickerSearch}>
+                                    <Form.Field>
+                                        <Label>Search by Ticker</Label>
+                                        <Form.Input 
+                                            name="ticker"
+                                            type="text"
+                                            value={ticker.toUpperCase()}
+                                            onChange={(e) => setTicker(e.target.value)}
+                                            placeholder="ticker"
+                                        />
+                                    </Form.Field>
+                                    <Button type="submit" style={{marginBottom:"20px", width:"30%"}}>Search</Button>
+                                </Form>
+                                <Form onSubmit={handleAddStock}>
+                                    <Form.Field>
+                                        <Form.Input 
+                                            name="company"
+                                            type="text"
+                                            value={companyName}
+                                            placeholder="Company Name"
+                                            readOnly
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Share Price</Label>
+                                        <Form.Input 
+                                            name="quote"
+                                            type="number"
+                                            value={quote.toFixed(2)}
+                                            onChange={(e) => setQuote(e.target.value)}
+                                            placeholder="Share Price"
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Buy Quantity</Label>
+                                        <Form.Input
+                                            name="quantity"
+                                            type="number"
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(e.target.value)}
+                                            placeholder="Share Quantity"
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Total Price</Label>
+                                        <Form.Input 
+                                            name="totalCost"
+                                            type="string"
+                                            value={`$ ${(quantity * quote).toFixed(2)}`}
+                                            placeholder="Total Cost"
+                                            readOnly
+                                        />
+                                    </Form.Field>
+                                    <Button type="submit" disabled={canSubmit} style={{width:"-webkit-fill-available"}}>
+                                        Add Stock
+                                    </Button>
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
                 ) : (
-                    <>
-                        <Form onSubmit={handleTickerSearchSell}>
-                            <Form.Field>
-                                <Form.Input 
-                                    name="ticker"
-                                    type="text"
-                                    value={ticker.toUpperCase()}
-                                    onChange={(e) => setTicker(e.target.value)}
-                                    placeholder="ticker"
-                                />
-                            </Form.Field>
-                            <Button type="submit">Search</Button>
-                        </Form>
-                        <Form onSubmit={handleSellStocks}>
-                            <Form.Field>
-                                <Form.Input 
-                                    name="company"
-                                    type="text"
-                                    value={companyName}
-                                    placeholder="Company Name"
-                                    readOnly
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Label>Share Price</Label>
-                                <Form.Input 
-                                    name="quote"
-                                    type="number"
-                                    value={quote}
-                                    onChange={(e) => setQuote(e.target.value)}
-                                    placeholder="Share Price"
-                                    readOnly
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Label>Number of Shares Owned</Label>
-                                <Form.Input 
-                                    name="sharesOwned"
-                                    type="number"
-                                    value={numSharesOwned}
-                                    readOnly
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Form.Input 
-                                    name="sellAmount"
-                                    type="number"
-                                    value={numSharesToSell}
-                                    onChange={(e) => handleSetNumSharesToSell(e)}
-                                />
-                            </Form.Field>
-                            <Form.Field>
-                                <Label>Total Price</Label>
-                                <Form.Input 
-                                    name="sellTotal"
-                                    type="string"
-                                    value={`$ ${(numSharesToSell * quote).toFixed(2)}`}
-                                />
-                            </Form.Field>
-                            <Button type="submit">
-                                Confirm
-                            </Button>
-                        </Form>
-                    </>
+                    <div>
+                        <div className="watchlist-title" style={{textAlign:"center"}}>
+                            Sell From Portfolio
+                        </div>
+                        <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+                            <div style={{ width: "30%", backgroundColor: "#f0f0f0", padding: "60px", borderRadius: "10px"}}>
+                                <Form onSubmit={handleTickerSearchSell}>
+                                    <Form.Field>
+                                    <Label>Search by Ticker</Label>
+                                        <Form.Input 
+                                            name="ticker"
+                                            type="text"
+                                            value={ticker.toUpperCase()}
+                                            onChange={(e) => setTicker(e.target.value)}
+                                            placeholder="ticker"
+                                        />
+                                    </Form.Field>
+                                    <Button type="submit" style={{marginBottom:"20px", width:"30%", textAlign:"center"}}>Search</Button>
+                                </Form>
+                                <Form onSubmit={handleSellStocks}>
+                                    <Form.Field>
+                                        <Form.Input 
+                                            name="company"
+                                            type="text"
+                                            value={companyName}
+                                            placeholder="Company Name"
+                                            readOnly
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Share Price</Label>
+                                        <Form.Input 
+                                            name="quote"
+                                            type="number"
+                                            value={quote}
+                                            onChange={(e) => setQuote(e.target.value)}
+                                            placeholder="Share Price"
+                                            readOnly
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Number of Shares Owned</Label>
+                                        <Form.Input 
+                                            name="sharesOwned"
+                                            type="number"
+                                            value={numSharesOwned}
+                                            readOnly
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Sell Quantity</Label>
+                                        <Form.Input 
+                                            name="sellAmount"
+                                            type="number"
+                                            value={numSharesToSell}
+                                            onChange={(e) => handleSetNumSharesToSell(e)}
+                                        />
+                                    </Form.Field>
+                                    <Form.Field>
+                                        <Label>Total Price</Label>
+                                        <Form.Input 
+                                            name="sellTotal"
+                                            type="string"
+                                            value={`$ ${(numSharesToSell * quote).toFixed(2)}`}
+                                        />
+                                    </Form.Field>
+                                    <Button type="submit"  disabled={canSell} style={{width:"-webkit-fill-available"}}>
+                                        Confirm
+                                    </Button>
+                                </Form>
+                            </div>
+                        </div>
+                    </div>
                 )
             }
         </div>
