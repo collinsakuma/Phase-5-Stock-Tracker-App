@@ -42,34 +42,38 @@ function LoginForm({ onLogin }) {
         },
     });
     return (
-        <Form onSubmit={formik.handleSubmit}>
-            <Form.Field>
-                <Form.Input 
-                    name="username"
-                    type="text"
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    placeholder="Username"
-                />
-                <p style={{ color: "red" }}> {formik.errors.username}</p>
-            </Form.Field>
-            <Form.Field>
-                <Form.Input 
-                    name="password"
-                    type="password"
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    placeholder="Password"
-                />
-                <p style={{ color: "red" }}> {formik.errors.password}</p>
-                <p>{popupAlert ? <p style={{color:"red"}}>Incorrect Password</p> : ""}</p>
-            </Form.Field>
-            <Button
-                type="submit"
-            >
-                Log In
-            </Button>
-        </Form>
+        <div style={{width:"15%"}}>
+            <h2 style={{textAlign:"center", marginTop:"75px"}}>Log In</h2>
+            <Form onSubmit={formik.handleSubmit} style={{textAlign:"center"}}>
+                <Form.Field>
+                    <Form.Input 
+                        name="username"
+                        type="text"
+                        value={formik.values.username}
+                        onChange={formik.handleChange}
+                        placeholder="Username"
+                    />
+                    <p style={{ color: "red" }}> {formik.errors.username}</p>
+                </Form.Field>
+                <Form.Field>
+                    <Form.Input 
+                        name="password"
+                        type="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        placeholder="Password"
+                    />
+                    <p style={{ color: "red" }}> {formik.errors.password}</p>
+                    <p>{popupAlert ? <p style={{color:"red"}}>Incorrect Password</p> : ""}</p>
+                </Form.Field>
+                <Button
+                    style={{}}
+                    type="submit"
+                >
+                    Log In
+                </Button>
+            </Form>
+        </div>
     )
 }
 export default LoginForm;
