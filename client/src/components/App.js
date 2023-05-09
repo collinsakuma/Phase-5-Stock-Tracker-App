@@ -5,7 +5,7 @@ import Header from "./Header";
 import Navbar from "./Navbar";
 import Homepage from "./home/Homepage";
 import Watchlist from "./Watchlist";
-import Holdings from "./Holdings";
+import Holdings from "./holdings/Holdings";
 import UpdatePortfolio from "./UpdatePortfolio";
 import Transactions from "./Transactions";
 import TickerHeader from "./TickerHeader";
@@ -68,7 +68,7 @@ function App() {
       <div>
         <Header />
         <TickerHeader />
-        <Navbar handleLogout={handleLogout}/> 
+        <Navbar handleLogout={handleLogout} user={user}/> 
       </div>
       <div>
         <Switch>
