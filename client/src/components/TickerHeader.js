@@ -19,10 +19,11 @@ function TickerHeader() {
 
 
     useEffect(() => {
+        let timeoutId;
         async function fetchMajorAverages() {
             try {
                 const averagesData = await getMajorAverages();
-                console.log(averagesData);
+                // console.log(averagesData);
                 setSAndP(averagesData[0].price);
                 setSAndPChange(averagesData[0].change);
                 setDowJ(averagesData[1].price);
@@ -32,8 +33,13 @@ function TickerHeader() {
             } catch(error) {
                 console.log(error);
             }
+            timeoutId = setTimeout(fetchMajorAverages, 5000);
         }
         fetchMajorAverages();
+
+        return () => {
+            clearTimeout(timeoutId);
+          }
     },[])
 
     // return averages with color
@@ -45,7 +51,7 @@ function TickerHeader() {
         }
         if (averageChange < 0) {
             return (
-                <p style={{color: "red"}}>⬇ {averageChange.toFixed(2)}</p>
+                <p style={{color: "red"}}>&nbsp;&nbsp;⬇&nbsp;{averageChange.toFixed(2)}</p>
             )
         }
     }
@@ -54,15 +60,15 @@ function TickerHeader() {
         <Marquee>
             <div className="ticker-header" style={{display: "flex"}}>
                 <div style={{display: "flex", marginRight:"400px"}}>
-                    <p><strong>S&P 500&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(sAndP.toFixed(2)).toLocaleString('en-US')}</p>
+                    <p><strong>S&P 500&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(sAndP.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
                     {displayAverage(sAndPChange)}
                 </div>
                 <div style={{display: "flex", marginRight:"400px"}}>
-                    <p><strong>Dow Jones Industrial&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(dowJ.toFixed(2)).toLocaleString('en-US')}</p>
+                    <p><strong>Dow Jones Industrial&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(dowJ.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
                     {displayAverage(dowJChange)}
                 </div>
                 <div style={{display: "flex", marginRight:"400px"}}>
-                    <p><strong>NASDAQ&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(nasdaq.toFixed(2)).toLocaleString('en-US')}</p>
+                    <p><strong>NASDAQ&nbsp;&nbsp;:&nbsp;&nbsp;</strong>{parseFloat(nasdaq.toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
                     {displayAverage(nasdaqChange)}
                 </div>
             </div>
