@@ -116,58 +116,65 @@ function Transactions() {
     }
     
     return (
-        <>
-            {rows.length > 0 && (
-                <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                    <TableContainer sx={{ maxHeight: 840 }}>
-                        <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                    {columns.map((column) => (
-                                        <TableCell
-                                            key={column.id}
-                                            align={column.align}
-                                            style={{ minWidth: column.minWidth }}
-                                        >
-                                            {column.label}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {rows
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => {
-                                        return (
-                                            <TableRow key={row.code} hover role="checkbox" tabIndex={-1}>
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.format && typeof value === 'number'
-                                                                ? column.format(value)
-                                                                : value}
-                                                        </TableCell>
-                                                    );
-                                                })}
-                                            </TableRow>
-                                        );
-                                    })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[20, 50, 100]}
-                        component="div"
-                        count={rows.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Paper>
-            )}
-        </>
+        <div>
+            <div className='transactions-title'>
+                Transaction History
+            </div>
+            <div style={{display:"flex", justifyContent:"center"}}>
+                <div style={{width:"75%", marginTop:"20px"}}>
+                    {rows.length > 0 && (
+                        <Paper sx={{ width: '100%', overflow: 'hidden'}}>
+                            <TableContainer sx={{ maxHeight: 840 }}>
+                                <Table stickyHeader aria-label="sticky table">
+                                    <TableHead>
+                                        <TableRow>
+                                            {columns.map((column) => (
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    style={{ minWidth: column.minWidth, fontWeight:"bolder" }}
+                                                >
+                                                    {column.label}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {rows
+                                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                            .map((row) => {
+                                                return (
+                                                    <TableRow key={row.code} hover role="checkbox" tabIndex={-1}>
+                                                        {columns.map((column) => {
+                                                            const value = row[column.id];
+                                                            return (
+                                                                <TableCell key={column.id} align={column.align}>
+                                                                    {column.format && typeof value === 'number'
+                                                                        ? column.format(value)
+                                                                        : value}
+                                                                </TableCell>
+                                                            );
+                                                        })}
+                                                    </TableRow>
+                                                );
+                                            })}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[20, 50, 100]}
+                                component="div"
+                                count={rows.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                            />
+                        </Paper>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }
 
