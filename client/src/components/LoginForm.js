@@ -2,9 +2,14 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button } from 'semantic-ui-react';
 import * as yup from "yup"; 
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '../lib/atoms';
+import { useHistory } from 'react-router-dom';
 
-function LoginForm({ onLogin }) {
-    const [popupAlert, setPopupAlert] = useState(false)
+function LoginForm() {
+    const [popupAlert, setPopupAlert] = useState(false);
+    const setUser = useSetRecoilState(userAtom);
+    const history = useHistory();
     
     const validationSchema = yup.object({
         username: yup.string().required(),
@@ -30,9 +35,10 @@ function LoginForm({ onLogin }) {
             .then((r) => {
                 setSubmitting(false);
                 if (r.ok) {
-                    r.json().then((user) => onLogin(user));
+                    r.json().then((user) => setUser(user));
+                    history.push('/');
                 } else {
-                    setPopupAlert(true)
+                    setPopupAlert(true);
                 }
             })
             .catch((error) => {
