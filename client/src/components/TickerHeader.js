@@ -58,7 +58,7 @@ function TickerHeader() {
             )
         }
     }
-    console.log(isMarketOpen)
+    // console.log(isMarketOpen)
     return (
         <div className="marquee-ticker">
             {isMarketOpen ? (
