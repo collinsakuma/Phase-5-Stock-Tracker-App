@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import NewsArticleCard from './NewsArticleCard';
 import { Card } from 'semantic-ui-react';
+import { newsArticlesAtom, userStocksAtom } from '../../lib/atoms';
+import { useRecoilState } from 'recoil';
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
 function NewsArticles() {
-    const [newsArticles, setNewsArticles] = useState([]);
-    const [userStocks, setUserStocks] = useState("");
+    const [newsArticles, setNewsArticles] = useRecoilState(newsArticlesAtom);
+    const [userStocks, setUserStocks] = useRecoilState(userStocksAtom);
     
     useEffect(() => {
         fetch('/stocks_by_user_id')
