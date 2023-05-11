@@ -45,7 +45,7 @@ function GovernmentTrading() {
         fetch(`${API}senate-disclosure-rss-feed?page=0&apikey=${process.env.REACT_APP_API_KEY}`)
         .then((r) => r.json())
         .then((r) => {
-            console.log(r)
+            // console.log(r)
             const newRows = r.map((transaction) => {
                 return createData(
                     transaction.transactionDate,
