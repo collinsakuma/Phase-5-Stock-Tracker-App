@@ -1,14 +1,17 @@
 import WatchListCardOpen from "./WatchListCardOpen";
-import { Button, Form, Label, Card } from 'semantic-ui-react';
-import { useState, useEffect } from "react";
-import Popup from "reactjs-popup"
+import { Button, Form, Card } from 'semantic-ui-react';
+import { useEffect } from "react";
 import WatchListCardClosed from './WatchListCardClosed';
+import { userAtom, isMarketOpenAtom, tickerAtom, watchStocksArrayAtom } from '../lib/atoms';
+import { useRecoilValue, useRecoilState } from "recoil";
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
-function Watchlist({ user, isMarketOpen }) {
-    const [ticker, setTicker] = useState("");
-    const [watchedStocksArray, setWatchedStocksArray] = useState([]);
+function Watchlist() {
+    const [ticker, setTicker] = useRecoilState(tickerAtom);
+    const [watchedStocksArray, setWatchedStocksArray] = useRecoilState(watchStocksArrayAtom);
+    const user = useRecoilValue(userAtom);
+    const isMarketOpen = useRecoilValue(isMarketOpenAtom);
 
     const handleAddStockToWatchList = (e) => {
         e.preventDefault();
