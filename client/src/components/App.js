@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import Login from "./Login";
 import Header from "./Header";
@@ -10,12 +10,14 @@ import UpdatePortfolio from "./UpdatePortfolio";
 import Transactions from "./Transactions";
 import TickerHeader from "./TickerHeader";
 import SenateTrading from "./gov_trading/governemtTrading";
+import { useRecoilState } from "recoil";
+import { userAtom, isMarketOpenAtom } from "../lib/atoms";
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [isMarketOpen, setIsMarketOpen] = useState(false);
+  const [user, setUser] = useRecoilState(userAtom);
+  const setIsMarketOpen = useRecoilState(isMarketOpenAtom);
 
   async function checkMarketOpen() {
     const response = await fetch(`${API}/is-the-market-open?apikey=${process.env.REACT_APP_API_KEY}`);
@@ -51,24 +53,15 @@ function App() {
         }
       });
   }, []);
-
-  const handleLogout = () => {
-    fetch("/logout", {method: "DELETE"})
-      .then((r) => {
-        if (r.ok) {
-          setUser(null)
-        }
-      })
-  }
   
-  if (!user) return <Login onLogin={setUser} />;
+  if (!user) return <Login/>;
 
   return (
     <div>
       <div>
         <Header />
+        <Navbar/> 
         <TickerHeader />
-        <Navbar handleLogout={handleLogout} user={user}/> 
       </div>
       <div>
         <Switch>
@@ -76,13 +69,13 @@ function App() {
             <Homepage />
           </Route>
           <Route exact path="/watchlist">
-            <Watchlist user={user} isMarketOpen={isMarketOpen}/>
+            <Watchlist/>
           </Route>
           <Route exact path="/holdings">
             <Holdings/>
           </Route>
           <Route exact path="/update_portfolio">
-            <UpdatePortfolio user={user}/>
+            <UpdatePortfolio/>
           </Route>
           <Route exact path="/transactions">
             <Transactions />
