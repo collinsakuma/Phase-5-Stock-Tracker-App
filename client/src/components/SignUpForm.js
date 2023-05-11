@@ -2,17 +2,22 @@ import { useState} from "react";
 import { useFormik } from "formik";
 import { Form, Button } from 'semantic-ui-react';
 import * as yup from 'yup';
+import { useSetRecoilState } from 'recoil';
+import { userAtom } from '../lib/atoms';
+import { useHistory } from "react-router-dom";
 
-function SignUpForm({ onLogin }) {
-    const [popupAlert, setPopupAlert] = useState(false)
+function SignUpForm() {
+    const [popupAlert, setPopupAlert] = useState(false);
+    const setUser = useSetRecoilState(userAtom);
+    const history = useHistory();
 
     const validationSchema = yup.object({
-        username: yup.string().required(),
+        username: yup.string().required('Required'),
         password: yup.string().required(),
         passwordConfirmation: yup
             .string()
-            .oneOf([yup.ref("password"), null], "Passwords must match")
-            .required(),
+            .oneOf([yup.ref("password")], "Passwords must match")
+            .required("Password confirmation is required"),
     });
 
     const formik = useFormik({
@@ -34,7 +39,8 @@ function SignUpForm({ onLogin }) {
             .then((r) => {
               setSubmitting(false);
               if (r.ok) {
-                r.json().then((user) => onLogin(user));
+                r.json().then((user) => setUser(user));
+                history.push('/')
               } else {
                 r.json().then((err) => setErrors(err.errors));
     
@@ -81,7 +87,7 @@ function SignUpForm({ onLogin }) {
                     onChange={formik.handleChange}
                     placeholder="confirm password"
                     />
-                    <p>{popupAlert ? <p style={{color:"red"}}>Incorrect Password</p> : ""}</p>
+                    <p style={{ color: "#FF0000" }}>{ formik.errors.passwordConfirmation }</p>
                 </Form.Field>
                 <Button type="submit">
                     Sign Up
