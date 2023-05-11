@@ -80,13 +80,13 @@ function Transactions() {
                         if (transaction.bought_total === 0) {
                             return null;
                         }
-                        return `$ ${(transaction.bought_total).toFixed(2)}`;
+                        return `$ ${parseFloat((transaction.bought_total).toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}`;
                     }
                     const transactionSold = () => {
                         if (transaction.sold_total === 0) {
                             return null;
                         }
-                        return `$ ${(transaction.sold_total).toFixed(2)}`;
+                        return `$ ${parseFloat((transaction.sold_total).toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}`;
                     }
                     const transactionType = () => {
                         if (transaction.bought_total === 0) {
@@ -123,7 +123,7 @@ function Transactions() {
             <div style={{display:"flex", justifyContent:"center"}}>
                 <div style={{width:"75%", marginTop:"20px"}}>
                     {rows.length > 0 && (
-                        <Paper sx={{ width: '100%', overflow: 'hidden'}}>
+                        <Paper sx={{ width: '100%', overflow: 'hidden', marginBottom:"50px"}}>
                             <TableContainer sx={{ maxHeight: 840 }}>
                                 <Table stickyHeader aria-label="sticky table">
                                     <TableHead>

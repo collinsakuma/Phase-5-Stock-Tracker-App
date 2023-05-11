@@ -1,9 +1,11 @@
 import { Button, Form, Label } from 'semantic-ui-react';
 import { useState, useEffect } from 'react';
+import { userAtom } from '../lib/atoms';
+import { useRecoilValue } from "recoil";
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
-function UpdatePortfolio({ user }) {
+function UpdatePortfolio() {
     const [newOrUpdate, setNewOrUpdate] = useState(true);
     const [ticker, setTicker] = useState("");
     const [foundStock, setFoundStock] = useState([]);
@@ -13,6 +15,8 @@ function UpdatePortfolio({ user }) {
     const [stockId, setStockId] = useState(0);
     const [canSubmit, setCanSubmit] = useState(true);
     const [canSell, setCanSell] = useState(true);
+    const user = useRecoilValue(userAtom);
+    
     // state for update stock
     const [numSharesOwned, setNumSharesOwned] = useState(0);
     const [numSharesToSell, setNumSharesToSell] = useState(0);
@@ -278,6 +282,7 @@ function UpdatePortfolio({ user }) {
                                             value={quote.toFixed(2)}
                                             onChange={(e) => setQuote(e.target.value)}
                                             placeholder="Share Price"
+                                            readOnly
                                         />
                                     </Form.Field>
                                     <Form.Field>
@@ -342,7 +347,7 @@ function UpdatePortfolio({ user }) {
                                         <Form.Input 
                                             name="quote"
                                             type="number"
-                                            value={quote}
+                                            value={quote.toFixed(2)}
                                             onChange={(e) => setQuote(e.target.value)}
                                             placeholder="Share Price"
                                             readOnly

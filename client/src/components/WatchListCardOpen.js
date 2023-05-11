@@ -18,10 +18,6 @@ const chart = {
         type: 'candlestick',
         height: 350
       },
-    //   title: {
-    //     text: 'Intraday Chart',
-    //     align: 'left'
-    //   },
       xaxis: {
         type: 'datetime'
       },
@@ -88,7 +84,7 @@ function WatchListCardOpen({ watchedStock, handleRemoveFromWatchList }) {
                 // console.log(chartData)
                 const prices = chartData.map((instance, index) => ({
                 x: new Date(instance.date),
-                y: [chartData[index].open, chartData[index].high, chartData[index].low, chartData[index].close]
+                y: [chartData[index].open.toFixed(2), chartData[index].high.toFixed(2), chartData[index].low.toFixed(2), chartData[index].close.toFixed(2)]
             }));
             setSeries([{
                 data: prices,

@@ -48,13 +48,14 @@ function HoldingCard({ holding }) {
       <Card style={{margin: 0, width: "60%"}}>
         <Card.Content>
           <div className="ui grid" style={{display: "flex"}}>
-            <p className="two wide column"><strong>{holding.stock.ticker.toUpperCase()}</strong></p>
+            <p className="one wide column"><strong>{holding.stock.ticker.toUpperCase()}</strong></p>
             <p className="three wide column">{holding.stock.company_name}</p>
             <p className="two wide column holding-card-position">{`$ ${price.toFixed(2)}`}</p>
-            <p className="two wide column holding-card-position" style={change < 0 ? {color:"red"} : {color:"green"}}>{`$ ${(change * holding.quantity).toFixed(2)}`}</p>
+            <p className="two wide column holding-card-position" style={change < 0 ? {color:"red"} : {color:"green"}}>{`$ ${(change).toFixed(2)}`}</p>
             <p className="two wide column holding-card-position" style={changePercent < 0 ? {color:"red"} : {color:"green"}}>{`${(changePercent).toFixed(2)} %`}</p>
             <p className="two wide column holding-card-position">{holding.quantity}</p>
-            <p className="two wide column holding-card-position">{`$ ${(holding.quantity * price).toFixed(2)}`}</p>
+            <p className="two wide column holding-card-position"style={change < 0 ? {color:"red"} : {color:"green"}}>{`$ ${(change * holding.quantity).toFixed(2)}`}</p>
+            <p className="two wide column holding-card-position">{`$ ${parseFloat((holding.quantity * price).toFixed(2)).toLocaleString('en-US', {minimumFractionDigits: 2})}`}</p>
           </div>
         </Card.Content>
       </Card>

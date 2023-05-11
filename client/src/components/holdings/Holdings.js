@@ -19,12 +19,13 @@ function Holdings() {
                 <Card style={{margin: 0, width: "60%"}}>
                     <Card.Content style={{marginBottom: "1px"}}>
                     <div className="ui grid" style={{display: "flex", marginBottom:"-25px", marginTop:"5px"}}>
-                        <p className="two wide column card-header">Symbol</p>
+                        <p className="one wide column card-header">Symbol</p>
                         <p className="three wide column card-header">Name</p>
                         <p className="two wide column holding-card-position card-header">Share price</p>
                         <p className="two wide column holding-card-position card-header">$ change</p>
                         <p className="two wide column holding-card-position card-header">% change</p>
                         <p className="two wide column holding-card-position card-header">Quantity</p>
+                        <p className="two wide column holding-card-position card-header">Total value change</p>
                         <p className="two wide column holding-card-position card-header">Total value</p>
                     </div>
                     </Card.Content>

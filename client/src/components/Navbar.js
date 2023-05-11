@@ -1,9 +1,21 @@
 import { Menu, Button } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../lib/atoms';
 
-function Navbar({ handleLogout, user }) {
+function Navbar() {
+    const [user, setUser] = useRecoilState(userAtom);
+
+    const handleLogout = () => {
+        fetch("/logout", {method: "DELETE"})
+          .then((r) => {
+            if (r.ok) {
+              setUser(null);
+            }
+          })
+      }
     return (
-        <Menu className='navbar-nav'>
+        <Menu className='navbar-nav' style={{marginTop:"0px", marginBottom:"0px"}}>
             <Menu.Item name="Home" style={{marginLeft:"10%"}}>
                 <NavLink className='navbar' exact to='/'>Home</NavLink>
             </Menu.Item>
@@ -24,7 +36,7 @@ function Navbar({ handleLogout, user }) {
             </Menu.Item>
             <Menu.Menu position="right">
                 <Menu.Item position="right">
-                    <p>Hello,&nbsp;&nbsp;{user.username}</p>
+                    {user !== null ? (<p>Hello,&nbsp;&nbsp;{user.username}</p>) : (<p></p>)}
                 </Menu.Item>
                 <Menu.Item position="right">
                     <Button onClick={handleLogout}>Logout</Button>
