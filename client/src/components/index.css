@@ -177,3 +177,43 @@
     margin-bottom: 20px;
     text-decoration: underline;
 }
+
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    background-color: #2169e5;
+  }
+/* #52b36c */
+.header-title {
+    font-family: 'News Cycle', sans-serif;
+    color: #fff;
+    font-size: 55px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.ui.button {
+    background-color: #2169e5;
+    color: white;
+
+}
+.ui.button:hover {
+    background-color: #5982ca;
+    color: white;
+}
+
+.ui.button:focus{
+    background-color: #5982ca;
+    color: white;
+}
+
+.marquee-ticker {
+    background-color: #f0f0f0;
+}
+
+.MuiIcon-root {
+    font-size: 300px;
+
+}
