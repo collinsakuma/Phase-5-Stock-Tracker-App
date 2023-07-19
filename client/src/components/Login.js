@@ -16,13 +16,13 @@ function Login() {
                 <>
                     <LoginForm/>
                     <p style={{ margin: '10px 0', fontSize: '14px' }}>Don't have an account?</p>
-                    <Button onClick={() => setShowLogin(false)} style={{marginBottom:"800px"}}>Sign Up</Button>
+                    <Button onClick={() => setShowLogin(false)} style={{marginBottom:"0px"}}>Sign Up</Button>
                 </>
             ) : (
                 <>
                     <SignUpForm/>
                     <p style={{ margin: '10px 0', fontSize: '14px' }}>Already have an account?</p>
-                    <Button onClick={() => setShowLogin(true)} style={{marginBottom:"800px"}}>Login</Button>
+                    <Button onClick={() => setShowLogin(true)} style={{marginBottom:"0px"}}>Login</Button>
                 </>
             )}
             </div>
