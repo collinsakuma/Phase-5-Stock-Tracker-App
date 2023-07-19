@@ -65,6 +65,7 @@ function SignUpForm() {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     placeholder="Username..."
+                    readOnly
                     />
                     <p style={{ color: "red" }}> {formik.errors.username}</p>
                 </Form.Field>
@@ -76,6 +77,7 @@ function SignUpForm() {
                     value={formik.values.password}
                     onChange={formik.handleChange}
                     placeholder="password..."
+                    readOnly
                     />
                 </Form.Field>
                 <Form.Field>
@@ -86,6 +88,7 @@ function SignUpForm() {
                     value={formik.values.passwordConfirmation}
                     onChange={formik.handleChange}
                     placeholder="confirm password"
+                    readOnly
                     />
                     <p style={{ color: "#FF0000" }}>{ formik.errors.passwordConfirmation }</p>
                 </Form.Field>
