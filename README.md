@@ -1,8 +1,6 @@
 # Portfolio Watch
 
 This project is my Phase 5 final project at the Flatiron software engineering bootcamp. 
-3
-![gif of webiste](https://github.com/collinsakuma/Phase-5-Stock-Tracker-App/Portfolio_Watch_Home.gif)
 
 ### Description 
 The main use of the Portfolio Watch app is so users can keep track of equity and stock holdings in one place and see up to date info on how their holding are doing throughout a trading session. Personally I use Vanguard to hold my investments but one thing that I wish it offered was live feedback of stock price movements. 

@@ -47,10 +47,26 @@ function LoginForm() {
             });
         },
     });
+
+    // Function to handle demo login
+    const handleDemoLogin = () => {
+        // Replace these with your demo account credentials
+         const demoAccount = {
+             username: "demo_user",
+             password: "demo_password",
+        };
+
+        // Set formik values with demo account credentials
+        formik.setValues(demoAccount);
+
+        // Submit the form programmatically
+        formik.handleSubmit();
+    };
     return (
         <div style={{width:"15%"}}>
             <h2 style={{textAlign:"center", marginTop:"75px"}}>Log In</h2>
             <Form onSubmit={formik.handleSubmit} style={{textAlign:"center"}}>
+                <Button onClick={handleDemoLogin}>Demo</Button>
                 <Form.Field>
                     <Form.Input 
                         name="username"

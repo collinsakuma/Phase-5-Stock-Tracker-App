@@ -10,14 +10,14 @@ import UpdatePortfolio from "./UpdatePortfolio";
 import Transactions from "./Transactions";
 import TickerHeader from "./TickerHeader";
 import SenateTrading from "./gov_trading/governemtTrading";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userAtom, isMarketOpenAtom } from "../lib/atoms";
 
 const API = "https://financialmodelingprep.com/api/v3/"
 
 function App() {
   const [user, setUser] = useRecoilState(userAtom);
-  const setIsMarketOpen = useRecoilState(isMarketOpenAtom);
+  const setIsMarketOpen = useSetRecoilState(isMarketOpenAtom);
 
   async function checkMarketOpen() {
     const response = await fetch(`${API}/is-the-market-open?apikey=${process.env.REACT_APP_API_KEY}`);
@@ -35,7 +35,7 @@ function App() {
       } catch(error) {
         console.log(error);
       }
-      timeoutId = setTimeout(isOpen, 20000);
+      timeoutId = setTimeout(isOpen, 2000);
     }
     isOpen();
 
