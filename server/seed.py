@@ -31,6 +31,11 @@ if __name__ == '__main__':
         )
         user_2.password_hash = "password"
 
+        user_3 = User(
+        username="demo_user",
+        )
+        user_3.password_hash = "demo_password"
+
         stock1 = Stock(
             ticker="aapl",
             company_name="Apple",

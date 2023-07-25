@@ -1,4 +1,8 @@
 # Standard library imports
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Remote library imports
 from flask import Flask
@@ -12,9 +16,15 @@ from flask_bcrypt import Bcrypt
 # Local imports
 
 # Instantiate app, set attributes
-app = Flask(__name__)
+app = Flask(
+    __name__,    
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
+
 app.secret_key = b"\x84\x98\x85 \x89\x82\xaf'$\xcdD\xa8\x00\xd1?\xe9"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stocks.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
