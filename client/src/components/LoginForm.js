@@ -52,8 +52,8 @@ function LoginForm() {
     const handleDemoLogin = () => {
         // Replace these with your demo account credentials
          const demoAccount = {
-             username: "demo_user",
-             password: "demo_password",
+             username: "demo",
+             password: "password",
         };
 
         // Set formik values with demo account credentials

@@ -31,6 +31,11 @@ if __name__ == '__main__':
         )
         user_2.password_hash = "password"
 
+        user_3 = User(
+        username="demo",
+        )
+        user_3.password_hash = "password"
+
         stock1 = Stock(
             ticker="aapl",
             company_name="Apple",
@@ -50,5 +55,5 @@ if __name__ == '__main__':
         )
 
 
-        db.session.add_all([user_1, user_2, stock1, stock2, stock3])
+        db.session.add_all([user_1, user_2, user_3, stock1, stock2, stock3])
         db.session.commit()
